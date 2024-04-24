@@ -40,27 +40,52 @@ $notificationResult = mysqli_query($con, $notificationQuery);
             <h4>Admin Dashboard </h4>
         </div>
         <div class="row">
-            <!-- Main Content Section -->
-            <div class="col-md-8">
-                <!-- Display key metrics and insights -->
-                <div class="card mb-3">
-                    <div class="card-header">
-                        Key Metrics and Insights
-                    </div>
-                    <div class="card-body">
-                        <!-- Total number of registered researchers -->
-                        <p>Total Number of Research: <?php /* PHP code to fetch total registered researchers */ ?></p>
-                        <!-- Total number of research projects -->
-                        <p>Total Research Projects: <?php /* PHP code to fetch total research projects */ ?></p>
-                        <!-- Recent research activities -->
-                        <p>Recent Research Activities: <?php /* PHP code to fetch recent research activities */ ?></p>
-                        <!-- Charts or graphs showing trends in research registrations, funding, etc. -->
-                        <div id="research-trends-chart">
-                            <!-- Chart goes here -->
-                        </div>
+        <!-- Main Content Section -->
+        <div class="col-md-8">
+            <!-- Display key metrics and insights -->
+            <div class="card mb-3">
+                <div class="card-header">
+                    Key Metrics and Insights
+                </div>
+                <div class="card-body">
+                    <?php
+                    // PHP code to fetch total registered researchers
+                    $totalResearchersQuery = "SELECT COUNT(*) AS total_researchers FROM teacher_info";
+                    $totalResearchersResult = mysqli_query($con, $totalResearchersQuery);
+                    $totalResearchersRow = mysqli_fetch_assoc($totalResearchersResult);
+                    $totalResearchers = $totalResearchersRow['total_researchers'];
+
+                    // PHP code to fetch total research projects
+                    $totalProjectsQuery = "SELECT COUNT(*) AS total_projects FROM research_info";
+                    $totalProjectsResult = mysqli_query($con, $totalProjectsQuery);
+                    $totalProjectsRow = mysqli_fetch_assoc($totalProjectsResult);
+                    $totalProjects = $totalProjectsRow['total_projects'];
+
+                    // PHP code to fetch recent research activities
+                    $recentActivitiesQuery = "SELECT * FROM research_info ORDER BY research_date DESC LIMIT 5";
+                    $recentActivitiesResult = mysqli_query($con, $recentActivitiesQuery);
+                    ?>
+                    <!-- Total number of registered researchers -->
+                    <p>Total Number of Researchers: <?php echo $totalResearchers; ?></p>
+                    <!-- Total number of research projects -->
+                    <p>Total Research Projects: <?php echo $totalProjects; ?></p>
+                    <!-- Recent research activities -->
+                    <p>Recent Research Activities:</p>
+                    <ul>
+                        <?php
+                        while ($activityRow = mysqli_fetch_assoc($recentActivitiesResult)) {
+                            echo "<li>" . $activityRow['research_title'] . " - " . $activityRow['research_date'] . "</li>";
+                        }
+                        ?>
+                    </ul>
+                    <!-- Charts or graphs showing trends in research registrations, funding, etc. -->
+                    <div id="research-trends-chart">
+                        <!-- Chart goes here -->
                     </div>
                 </div>
             </div>
+        </div>
+
             <!-- Notifications Section -->
             <div class="col-md-4">
                 <div class="card">

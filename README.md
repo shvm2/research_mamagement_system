@@ -24,7 +24,9 @@ The Research Management System (RMS) is a web-based application designed to stre
 
 1. Clone the repository to your local machine:
 
+```bash
 git clone https://github.com/shvm/research_mamagement_system.git
+```
 
 2. Import the database schema from `database.sql` into your MySQL database.
 3. Configure the database connection in `connection/connection.php` with your MySQL credentials.
